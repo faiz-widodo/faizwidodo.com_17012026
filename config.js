@@ -93,7 +93,6 @@ const portfolioConfig = {
     { name: "TRANSACTIONAL_FUNNELS", icon: "filter_list" },
     { name: "DEVELOPER_API_PLATFORMS", icon: "api" },
     { name: "CHECKOUT_CONVERSION", icon: "shopping_cart_checkout" },
-    { name: "WALLET_EXPERIENCES", icon: "wallet" }
   ],
   
   // Scrolling animation speed (in seconds for one full cycle)
@@ -186,9 +185,7 @@ const portfolioConfig = {
     { name: "GAMIFICATION", icon: "videogame_asset" },
     { name: "PERSONALIZATION_LOGIC", icon: "settings_suggest" },
     { name: "E2E_DELIVERY", icon: "task_alt" },
-    { name: "CONVERSATIONAL_UX", icon: "chat" },
     { name: "AGILE", icon: "directions_run" },
-    { name: "VOICE_DESIGN", icon: "record_voice_over" },
     { name: "DEPENDENCY_MGMT", icon: "account_tree" },
     { name: "TECHNICAL_TRADE_OFFS", icon: "swap_horiz" },
     { name: "RISK_MGMT", icon: "report_problem" },
@@ -199,7 +196,6 @@ const portfolioConfig = {
     { name: "TEAM_COACHING", icon: "school" },
     { name: "FUNNEL_OPT", icon: "conversion_path" },
     { name: "GLOBAL_COORDINATION", icon: "language" },
-    { name: "SEARCH_DISCOVERY", icon: "find_in_page" },
     { name: "ACCESSIBILITY", icon: "accessibility_new" },
     { name: "EDUCATION_ONBOARDING", icon: "auto_stories" }
   ],
