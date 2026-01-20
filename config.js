@@ -1,6 +1,7 @@
 // ============================================
 // PORTFOLIO CONFIGURATION FILE
-// Update all your content here easily!
+// All site content is managed through this configuration object.
+// Edit the values below to update the website content.
 // ============================================
 
 const portfolioConfig = {

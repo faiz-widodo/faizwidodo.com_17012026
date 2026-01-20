@@ -1,6 +1,7 @@
 // ============================================
 // PORTFOLIO RENDERING LOGIC
-// This file handles rendering content from config.js
+// Dynamically renders HTML content from config.js
+// Reads portfolioConfig and builds the DOM accordingly
 // ============================================
 
 // Wait for DOM to be ready
