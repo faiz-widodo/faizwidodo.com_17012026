@@ -6,6 +6,16 @@
 
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', function() {
+    // Add error handling for config loading
+    if (typeof portfolioConfig === 'undefined') {
+        console.error('portfolioConfig not found. Make sure config.js is loaded.');
+        // Show user-friendly error message
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'fixed top-0 left-0 right-0 bg-red-600 text-white p-4 text-center z-50';
+        errorDiv.textContent = 'Error loading site configuration. Please refresh the page.';
+        document.body.insertBefore(errorDiv, document.body.firstChild);
+        return;
+    }
     renderPortfolio();
 });
 
@@ -14,9 +24,13 @@ function renderPortfolio() {
         console.error('portfolioConfig not found. Make sure config.js is loaded.');
         return;
     }
+    
+    try {
 
     // Render Navigation
-    document.getElementById('nav-brand').textContent = portfolioConfig.nav.brand;
+    const navBrand = document.getElementById('nav-brand');
+    navBrand.textContent = portfolioConfig.nav.brand;
+    navBrand.href = '/';
     const connectBtn = document.getElementById('nav-connect');
     connectBtn.href = portfolioConfig.nav.connectButton.link;
     // Update button text - replace text content while keeping icon
@@ -52,6 +66,7 @@ function renderPortfolio() {
             card.href = companyUrl;
             card.target = '_blank';
             card.rel = 'noopener noreferrer';
+            card.setAttribute('aria-label', `Visit ${companyName} website`);
         }
         
         card.className = 'group relative aspect-video bg-white/[0.02] border border-white/5 rounded flex flex-col items-center justify-center backdrop-blur-sm transition-all duration-300 hover:bg-white/[0.04] overflow-hidden';
@@ -160,6 +175,7 @@ function renderPortfolio() {
                 div.href = platformUrl;
                 div.target = '_blank';
                 div.rel = 'noopener noreferrer';
+                div.setAttribute('aria-label', `Visit ${platformName} platform`);
             }
             div.className = 'h-16 flex items-center justify-center border border-border-subtle rounded bg-white/[0.02] grayscale opacity-60 hover:opacity-80 transition-opacity';
             div.innerHTML = `<span class="mono-text font-bold text-sm tracking-tighter text-slate-300">${platformName}</span>`;
@@ -303,34 +319,27 @@ function renderPortfolio() {
     // Render Featured Articles (Medium Posts)
     const mediumEmbed = document.getElementById('medium-embed');
     if (mediumEmbed) {
-        console.log('medium-embed element found');
-        console.log('portfolioConfig.featuredArticles:', portfolioConfig.featuredArticles);
         if (portfolioConfig.featuredArticles && portfolioConfig.featuredArticles.length > 0) {
-            console.log('Rendering', portfolioConfig.featuredArticles.length, 'articles');
             mediumEmbed.innerHTML = '';
-            portfolioConfig.featuredArticles.forEach((article, index) => {
-                console.log('Rendering article', index, article.title);
+            portfolioConfig.featuredArticles.forEach((article) => {
                 const articleCard = document.createElement('div');
                 articleCard.className = 'border border-border-subtle bg-white/[0.02] rounded-lg p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4';
                 articleCard.innerHTML = `
                     <h4 class="text-slate-200 text-lg font-bold">${article.title}</h4>
-                    <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-primary/10 border border-primary/20 text-primary mono-text text-[10px] font-bold rounded hover:bg-primary/20 transition-colors flex items-center gap-2 whitespace-nowrap">
+                    <a href="${article.url}" target="_blank" rel="noopener noreferrer" aria-label="Read article: ${article.title}" class="px-4 py-2 bg-primary/10 border border-primary/20 text-primary mono-text text-[10px] font-bold rounded hover:bg-primary/20 transition-colors flex items-center gap-2 whitespace-nowrap">
                         READ ON MEDIUM
-                        <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+                        <span class="material-symbols-outlined text-[14px]" aria-hidden="true">open_in_new</span>
                     </a>
                 `;
                 mediumEmbed.appendChild(articleCard);
             });
         } else {
-            console.log('No featured articles found, hiding section');
             // Hide section if no articles
             const section = mediumEmbed.closest('section');
             if (section) {
                 section.style.display = 'none';
             }
         }
-    } else {
-        console.error('medium-embed element not found in DOM');
     }
 
     // Render Socials
@@ -342,8 +351,9 @@ function renderPortfolio() {
         a.href = social.link;
         a.target = '_blank';
         a.rel = 'noopener noreferrer';
+        a.setAttribute('aria-label', `Visit ${social.name} profile`);
         a.innerHTML = `
-            <span class="material-symbols-outlined text-primary mb-3 text-3xl">${social.icon}</span>
+            <span class="material-symbols-outlined text-primary mb-3 text-3xl" aria-hidden="true">${social.icon}</span>
             <span class="mono-text text-[10px] font-bold uppercase tracking-widest text-slate-400">${social.name}</span>
         `;
         socialsList.appendChild(a);
@@ -359,6 +369,17 @@ function renderPortfolio() {
             deliveredResultsSection.style.display = 'block';
         } else {
             deliveredResultsSection.style.display = 'none';
+        }
+    }
+    } catch (error) {
+        console.error('Error rendering portfolio:', error);
+        // Only show error banner for critical errors, not missing optional content
+        // Check if it's a critical error (config missing) vs rendering error
+        if (typeof portfolioConfig === 'undefined') {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'fixed top-0 left-0 right-0 bg-red-600 text-white p-4 text-center z-50';
+            errorDiv.textContent = 'Error loading site configuration. Please refresh the page.';
+            document.body.insertBefore(errorDiv, document.body.firstChild);
         }
     }
 }
