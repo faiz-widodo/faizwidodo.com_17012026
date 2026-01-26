@@ -300,6 +300,39 @@ function renderPortfolio() {
         educationList.appendChild(div);
     });
 
+    // Render Featured Articles (Medium Posts)
+    const mediumEmbed = document.getElementById('medium-embed');
+    if (mediumEmbed) {
+        console.log('medium-embed element found');
+        console.log('portfolioConfig.featuredArticles:', portfolioConfig.featuredArticles);
+        if (portfolioConfig.featuredArticles && portfolioConfig.featuredArticles.length > 0) {
+            console.log('Rendering', portfolioConfig.featuredArticles.length, 'articles');
+            mediumEmbed.innerHTML = '';
+            portfolioConfig.featuredArticles.forEach((article, index) => {
+                console.log('Rendering article', index, article.title);
+                const articleCard = document.createElement('div');
+                articleCard.className = 'border border-border-subtle bg-white/[0.02] rounded-lg p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4';
+                articleCard.innerHTML = `
+                    <h4 class="text-slate-200 text-lg font-bold">${article.title}</h4>
+                    <a href="${article.url}" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-primary/10 border border-primary/20 text-primary mono-text text-[10px] font-bold rounded hover:bg-primary/20 transition-colors flex items-center gap-2 whitespace-nowrap">
+                        READ ON MEDIUM
+                        <span class="material-symbols-outlined text-[14px]">open_in_new</span>
+                    </a>
+                `;
+                mediumEmbed.appendChild(articleCard);
+            });
+        } else {
+            console.log('No featured articles found, hiding section');
+            // Hide section if no articles
+            const section = mediumEmbed.closest('section');
+            if (section) {
+                section.style.display = 'none';
+            }
+        }
+    } else {
+        console.error('medium-embed element not found in DOM');
+    }
+
     // Render Socials
     const socialsList = document.getElementById('socials-list');
     socialsList.innerHTML = '';
